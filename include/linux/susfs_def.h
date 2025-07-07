@@ -46,7 +46,10 @@
 /*
  * inode->i_state => storing flag 'INODE_STATE_'
  * mount->mnt.susfs_mnt_id_backup => storing original mnt_id of normal mounts or custom sus mnt_id of sus mounts
- * task_struct->susfs_task_state => storing flag 'TASK_STRUCT_'
+ * inode->i_mapping->flags => storing flag 'AS_FLAGS_'
+ * nd->state => storing flag 'ND_STATE_'
+ * nd->flags => storing flag 'ND_FLAGS_'
+ * task_struct->thread_info.flags => storing flag 'TIF_'
  */
 #define INODE_STATE_SUS_PATH BIT(24)
 #define INODE_STATE_SUS_MOUNT BIT(25)
