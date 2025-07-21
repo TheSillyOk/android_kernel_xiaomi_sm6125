@@ -10,6 +10,7 @@
 #define CMD_SUSFS_ADD_SUS_PATH 0x55550
 #define CMD_SUSFS_SET_ANDROID_DATA_ROOT_PATH 0x55551
 #define CMD_SUSFS_SET_SDCARD_ROOT_PATH 0x55552
+#define CMD_SUSFS_ADD_SUS_PATH_LOOP 0x55553
 #define CMD_SUSFS_ADD_SUS_MOUNT 0x55560
 #define CMD_SUSFS_HIDE_SUS_MNTS_FOR_ALL_PROCS 0x55561
 #define CMD_SUSFS_UMOUNT_FOR_ZYGOTE_ISO_SERVICE 0x55562
@@ -77,7 +78,6 @@
 #define DATA_ADB_NO_AUTO_ADD_SUS_KSU_DEFAULT_MOUNT "/data/adb/susfs_no_auto_add_sus_ksu_default_mount"
 #define DATA_ADB_NO_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT "/data/adb/susfs_no_auto_add_try_umount_for_bind_mount"
 
-#ifdef CONFIG_THREAD_INFO_IN_TASK
 static inline bool susfs_is_current_non_root_user_app_proc(void) {
 	return test_ti_thread_flag(&current->thread_info, TIF_NON_ROOT_USER_APP_PROC);
 }
@@ -85,8 +85,14 @@ static inline bool susfs_is_current_non_root_user_app_proc(void) {
 static inline void susfs_set_current_non_root_user_app_proc(void) {
 	set_ti_thread_flag(&current->thread_info, TIF_NON_ROOT_USER_APP_PROC);
 }
-#endif
 
+static inline bool susfs_starts_with(const char *str, const char *prefix) {
+    while (*prefix) {
+        if (*str++ != *prefix++)
+            return false;
+    }
+    return true;
+}
 
 
 #endif // #ifndef KSU_SUSFS_DEF_H
